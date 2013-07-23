@@ -1,7 +1,7 @@
 # BootSHtrap
 - - -
 
-A micro helper library of functions to create bash script
+A micro helper library of functions to create simple bash script
 
 [[ image to be inserted here ]]
 
