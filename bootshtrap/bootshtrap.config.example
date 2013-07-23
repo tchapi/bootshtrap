@@ -1,0 +1,21 @@
+# Title of your script (optional, though highly desirable)
+# __TITLE="My Example Script"
+
+# options["SHORT_CODE", "long"]="LONG_VERSION_OF_ARGUMENT"
+# options["SHORT_CODE", "parameter"]=0 # 0 or 1
+# options["SHORT_CODE", "required"]=1 # Or 0 if optional
+# options["SHORT_CODE", "message"]="HELP_MESSAGE"
+# options["SHORT_CODE", "function"]="FUNCTION_NAME"
+
+# Standard help message, bound to "-h" or "--help"
+options["h", "required"]=0
+options["h", "parameter"]=0
+options["h", "long"]="help"
+options["h", "message"]="prints this help and usage message"
+options["h", "function"]="usage"
+
+# Your parameters (I cannot guess them!)
+parameters=""
+
+# Use custom gnu-getopt path
+# __GETOPT_PATH="/usr/local/Cellar/gnu-getopt/1.1.5/bin/getopt"
