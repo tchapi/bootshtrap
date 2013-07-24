@@ -25,6 +25,8 @@ __GETOPT_PATH="getopt"
   declare -A options
   load_config_file ${__DIR}/bootshtrap.config
 
+  title
+
 # Parses the options configuration
   source ${__DIR}/src/usage.sh
 
@@ -32,7 +34,7 @@ __GETOPT_PATH="getopt"
 run() {
 
   # Magic
-  eval set -- "$ARGS";
+  eval set -- "${ARGS}";
   log "${#ARGS[@]} option(s) found : ${ARGS}"
   
   # Do we have enough options ?
@@ -44,10 +46,10 @@ run() {
 
   while true; do
 
-    param="$1"
-    log "Checking option : $param"
+    param="${1}"
+    log "Checking option : ${param}"
 
-    if [[ "$1" = '--' ]]; then 
+    if [[ "${1}" = '--' ]]; then 
       shift;
       break;
     fi
@@ -63,13 +65,14 @@ run() {
       eval ${options[${ARGS_LONG_ALL["$SHORT_USED"]}, "function"]}
       shift;
     else
-      notify_error "Invalid option : $1"
+      notify_error "Invalid option : ${1}"
       usage
       exit 1
     fi
 
   done
 
-  main "$@"
+  main "${@}"
+  clear
 
 }

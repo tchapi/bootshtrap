@@ -1,18 +1,17 @@
-# Standard bootSHtrap script template
+# Standard bootSHtrap script template example
 #!/bin/bash
 
 # Use BootSHtrap
-__DEBUG=1 # Sets the debug mode, which outputs log functions 
+#__DEBUG=1 # Sets the debug mode, which outputs logs to standard output
 source bootshtrap/autoload.sh # Autoloads the whole stuff
 
 main(){
 
-  title
+  if [ $# -gt 0 ]; then
+    indicate "Hey, I've found some parameters" "${@}" # Your parameters are available as usual ..
+  fi
 
-  indicate "Parameters" "$@" # Your parameters are available as usual ..
-
-  ack "I'm only printing this."
-  clear
+  ack "I'm a useful script that only prints this."
 
 }
 

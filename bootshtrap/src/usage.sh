@@ -7,8 +7,6 @@
 
 usage(){
 
-  title 
-
   echo -ne " # "${GREEN}"Usage:"${RESET}" `basename $0`"
 
   if [[ ${#ARGS_SHORT_REQUIRED[@]} -gt 0 ]]; then
@@ -27,16 +25,16 @@ usage(){
       long=${options["$key, long"]}
       message=${options["$key, message"]}
       
-      echo -ne ${BLUE}"     -$key"${RESET}
+      echo -ne ${BLUE}"     -${key}"${RESET}
 
       if [[ "$long" ]]; then
-        echo -ne " --$long"
+        echo -ne " --${long}"
       fi
 
       echo -ne " ("${RED}"required"${RESET}")"
       
-      if [[ "$message" ]]; then
-        echo -e " $message"
+      if [[ "${message}" ]]; then
+        echo -e " ${message}"
       fi
 
   done
@@ -46,16 +44,16 @@ usage(){
       long=${options["$key, long"]}
       message=${options["$key, message"]}
       
-      echo -ne ${BLUE}"     -$key"${RESET}
+      echo -ne ${BLUE}"     -${key}"${RESET}
 
-      if [[ "$long" ]]; then
-        echo -ne " --$long"
+      if [[ "${long}" ]]; then
+        echo -ne " --${long}"
       fi
 
       echo -ne " ("${GREEN}"optional"${RESET}")"
       
-      if [[ "$message" ]]; then
-        echo -e " $message"
+      if [[ "${message}" ]]; then
+        echo -e " ${message}"
       fi
 
   done
@@ -81,9 +79,11 @@ ORIGINAL_ARGS_COUNT=$#
 
 parse_options_config() {
 
+  log "Parsing options ..."
+
   for full_key in "${!options[@]}"; do
 
-      IFS=', ' read -a option <<< "$full_key"
+      IFS=', ' read -a option <<< "${full_key}"
       code=${option[0]}
       key=${option[1]}
       value=${options["$full_key"]}
@@ -91,22 +91,22 @@ parse_options_config() {
       if [[ $key = "required" ]]; then
         
         if [[ $value -eq 1 ]]; then
-          ARGS_SHORT_REQUIRED+=("$code")
+          ARGS_SHORT_REQUIRED+=("${code}")
           if [[ ${options["$code, long"]} ]]; then
             ARGS_LONG_REQUIRED+=(${options["$code, long"]})
           fi
         else
-          ARGS_SHORT_OPTIONAL+=("$code")
+          ARGS_SHORT_OPTIONAL+=("${code}")
           if [[ ${options["$code, long"]} ]]; then
             ARGS_LONG_OPTIONAL+=(${options["$code, long"]})
           fi
         fi
 
-        ARGS_ALL+=("$code")
+        ARGS_ALL+=("${code}")
         ARGS_LONG_ALL+=(${options["$code, long"]})
         ARGS_ALL_FUNCTION+=(${options["$code, function"]})
 
-        log " Option found : "$code
+        log " Found a new option : ${code}"
 
       fi
 
@@ -121,9 +121,8 @@ parse_options_config() {
   ARGS_LONG_ALL=($(printf '%s\n' "${ARGS_LONG_ALL[@]}"|sort))
   ARGS_ALL_FUNCTION=($(printf '%s\n' "${ARGS_ALL_FUNCTION[@]}"|sort))
 
-  log "Short options : " ${ARGS_SHORT_REQUIRED[@]} " - " ${ARGS_SHORT_OPTIONAL[@]}
-  log "Of which ${#ARGS_SHORT_REQUIRED[@]} is (are) required"
-  log "Long options : " ${ARGS_LONG_REQUIRED[@]} " - " ${ARGS_LONG_OPTIONAL[@]}
+  log "Short options : ${ARGS_SHORT_OPTIONAL[@]}, of which ${#ARGS_SHORT_REQUIRED[@]} is (are) required"
+  log " --> Long equivalents : ${ARGS_LONG_OPTIONAL[@]}"
 
 }
 
@@ -134,7 +133,7 @@ get_arguments(){
   ARGS=$(${__GETOPT_PATH} -o "$SHORTS" -l "$LONGS" -n $0 -- "$@" 2>/dev/null);
 
   if [[ $? -ne 0 ]]; then
-    notify_error "Invalid option(s) : $@"
+    notify_error "Invalid option(s) : ${@}"
     usage
     exit 1
   fi

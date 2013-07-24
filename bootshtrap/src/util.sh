@@ -13,11 +13,11 @@ check_major_bash_version(){
   # Your major bash version
   bash_version=${BASH_VERSION%%[^0-9]*}
 
-  if [ "$bash_version" -lt "$min_major_bash_version" ]; then
+  if [ "${bash_version}" -lt "${min_major_bash_version}" ]; then
 
     clear
     indicate "Your bash version" ${BASH_VERSION}
-    notify_error "Oh, ... bugger. This script requires bash > "${min_major_bash_version}"."
+    notify_error "Oh, ... bugger. This script requires bash > ${min_major_bash_version}."
     exit 1 # Safer than return and continue
 
   fi
@@ -53,7 +53,7 @@ get_array_index() {
   shift
   ARRAY=("${@}")
   for ((index=0; index<${#ARRAY[@]}; index++)); do 
-    if [ "${ARRAY[$index]}" = "$value" ]; then
+    if [ "${ARRAY[$index]}" = "${value}" ]; then
       echo $index
       return
     fi
