@@ -43,11 +43,14 @@ warn(){
 
 ask(){
   if [ "$#" -eq 2 ] ; then
-    echo -e " # "${RED}"${1}"${RESET}" [${2}] ?\c"
+    echo -e >&2 " # "${BLUE}"${1}"${RESET}" [${2}] ?\c"
   else
-    echo -e " # "${RED}"${1}"${RESET}" ?\c"
+    echo -e >&2 " # "${BLUE}"${1}"${RESET}" ?\c"
   fi
   read response
+  if [ "$response" == "" ] && [ "$#" -eq 2 ]; then
+    response="${2}"
+  fi
   echo "${response}"
   return
 }

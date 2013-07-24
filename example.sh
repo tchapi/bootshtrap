@@ -13,6 +13,9 @@ main(){
 
   ack "I'm a useful script that only prints this."
 
+  answer=`ask "what do you want" "nothin'"`
+  indicate "User said" ${answer}
+
 }
 
 # Runs the application - this call must be the last (and only) inline function call,
