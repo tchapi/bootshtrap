@@ -5,6 +5,7 @@
 __DEBUG=1 # Sets the debug mode, which outputs logs to standard output
 source bootshtrap/autoload.sh # Autoloads the whole stuff
 
+# You need to have a main() function in your script - this is your entry point
 main(){
 
   if [ $# -gt 0 ]; then
@@ -15,6 +16,13 @@ main(){
 
   answer=`ask "what do you want" "nothin'"`
   indicate "User said" ${answer}
+
+}
+
+# For each option / parameter, we define a handler which name is assigned in the configuration file
+c_function() {
+
+  indicate "The C function was called with parameter" ${1}
 
 }
 

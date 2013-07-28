@@ -5,7 +5,7 @@
 # -------------------------- #
 
 # Check major bash version
-check_major_bash_version(){
+check_major_bash_version() {
 
   # Inputs
   min_major_bash_version=$1
@@ -18,14 +18,14 @@ check_major_bash_version(){
     clear
     indicate "Your bash version" ${BASH_VERSION}
     notify_error "Oh, ... bugger. This script requires bash > ${min_major_bash_version}."
-    exit 1 # Safer than return and continue
+    error_exit
 
   fi
 
 }
 
 # Load a config file
-load_config_file(){
+load_config_file() {
 
   # Inputs
   CONFIG_FILE=$1
@@ -36,12 +36,11 @@ load_config_file(){
   if [[ -f $CONFIG_FILE ]]; then
   
     source $CONFIG_FILE
-    return
 
   else
 
     notify_error "Missing configuration file : (${CONFIG_FILE})"
-    return 1
+    error_exit
 
   fi
 
@@ -59,7 +58,21 @@ get_array_index() {
     fi
   done
   echo -1
-  return 1
+}
+
+# Assesses the existence of a function, otherwise exits
+assess_function() {
+  type ${1} &>/dev/null || {
+    notify_error "The function ${1} is not defined; now exiting."
+    error_exit
+    }
+}
+
+error_exit() {
+
+  clear
+  exit 1
+
 }
 
 log "util.sh loaded"

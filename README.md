@@ -32,4 +32,12 @@ This will not change your `getopt`, but install a new one in a new location (gen
 
 The configuration is done in the `bootshtrap.config` file at the root of the `bootshtrap` folder. This file contains various parameters for you to set.
 
+### Setting the title of your script
+
+### Adding options
+
+An option without parameter cannot be required
+
+
+
 [[ To be continued ]]

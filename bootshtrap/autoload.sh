@@ -41,7 +41,7 @@ run() {
   if [[ $ORIGINAL_ARGS_COUNT -lt ${#ARGS_SHORT_REQUIRED[@]} ]]; then
     notify_error "You have not provided enough options"
     usage
-    exit 1
+    error_exit # Exits with a general purpose error code
   fi
 
   while true; do
@@ -49,25 +49,46 @@ run() {
     param="${1}"
     log "Checking option : ${param}"
 
+    # End of parameters array, break.
     if [[ "${1}" = '--' ]]; then 
       shift;
       break;
     fi
 
-    # if options contains it
+    # Let's check if we have valid options
     SHORT_USED=`get_array_index "${param:1}" ${ARGS_ALL[@]}`
     LONG_USED=`get_array_index "${param:2}" ${ARGS_LONG_ALL[@]}`
 
+    # We have to differentiate short options and long options
     if [[ SHORT_USED -ne -1 ]]; then
-      eval ${options[${ARGS_ALL["$SHORT_USED"]}, "function"]}
       shift;
+      handler=${options[${ARGS_ALL["$SHORT_USED"]}, "function"]}
+      assess_function ${handler}
+
+      # This option has a parameter ?
+      if ! [ ${options[${ARGS_ALL["$SHORT_USED"]}, "parameter"]} = "0" ] && [ -n "${1}" ]; then
+        ${handler} "${1}"
+        shift;
+      else
+        ${handler}
+      fi
     elif [[ LONG_USED -ne -1 ]]; then
-      eval ${options[${ARGS_LONG_ALL["$SHORT_USED"]}, "function"]}
       shift;
+      handler=${options[${ARGS_LONG_ALL["$LONG_USED"]}, "function"]}
+      assess_function ${handler}
+
+      # This option has a parameter ?
+      if ! [ ${options[${ARGS_LONG_ALL["$LONG_USED"]}, "parameter"]} = "0" ] && [ -n "${1}" ]; then
+        ${handler} "${1}"
+        shift;
+      else
+        ${handler}
+      fi
     else
+      # Ooops
       notify_error "Invalid option : ${1}"
       usage
-      exit 1
+      error_exit # Exits with a general purpose error code
     fi
 
   done
