@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 # Standard bootSHtrap script template example
 
 # Use BootSHtrap
@@ -13,16 +13,6 @@ main(){
   fi
 
   ack "I'm a useful script that only prints this."
-
-  answer=`ask "what do you want" "nothin'"`
-  indicate "User said" ${answer}
-
-}
-
-# For each option / parameter, we define a handler which name is assigned in the configuration file
-c_function() {
-
-  indicate "The C function was called with parameter" ${1}
 
 }
 
