@@ -56,12 +56,12 @@ ask(){
 }
 
 said_yes(){
-  echo -e "   | "$(whoami)" said "${GREEN}"Yes"${RESET}"."${GREEN}" ${1}"${RESET}" :"
+  echo -e "   | "$(whoami)" said "${GREEN}"Yes"${RESET}"."${GREEN}" ${1}"${RESET}
   clear
 }
 
 said_no(){
-  echo -e "   | "$(whoami)" said "${RED}"No. "${RESET}
+  echo -e "   | "$(whoami)" said "${RED}"No"${RESET}"."${GREEN}" ${1}"${RESET}
   clear
 }
 

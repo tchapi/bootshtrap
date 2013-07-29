@@ -212,6 +212,157 @@ This is the easy step to get you going. Just create a script
     run
 ```
 
+## API
+
+## Notifications
+
+> NB : Notifications appear in color on compatible terminals, but the markdown flavour used herein doesn't allow for syntax coloring, sorry.
+
+### title
+
+Echoes the nicely formatted title of your script. _This function takes one optional argument : the title to output. If the configuration variable `__TITLE` is not present, this fallback argument is used._
+
+**Usage**
+
+```bash
+    title "My Example Script"
+```
+
+**Output**
+
+```bash 
+     # ----------------- #
+     # My Example Script #
+     # ----------------- #
+```
+
+### ack
+
+Echoes a green formatted text. _This function takes a single, or two arguments. The first argument will be echoed in color for emphasis, not the second_
+
+**Usage**
+
+```bash
+    ack "I've done this"
+    ack "Information" "He's done that too"
+```
+
+**Output**
+
+```bash
+    # I've done this
+    # Information : He's done that too
+```
+
+### indicate
+
+Same as `ack`, but in blue.
+
+### warn
+
+Same as `ack`, but in yellow
+
+### ask
+
+Ask the user for something and returns the answer. _This function takes two arguments: the first one is the question to ask, the second one (optional) is the default answer if the user just bangs the Return key._
+
+**Usage**
+
+```bash
+    answer=`ask "What do you want" "nothin'"`
+    indicate "User said" ${answer}
+
+    answer2=`ask "What do you really want"`
+    indicate "User said" ${answer2}
+```
+
+**Output**
+
+```bash
+    # What do you want [nothin'] ? bla bla
+    # User said : bla bla
+
+    # What do you really want ? bla bla
+    # User said : bla bla
+```
+
+
+### said_yes
+
+Echoes a formatted validation message using the name of the logged in user. _This function takes one argument that will be echoed._
+
+**Usage**
+
+```bash
+    said_yes "Going on with the script."
+```
+
+**Output**
+
+```bash
+    | user said yes. Going on with the script.
+```
+
+### said_no
+
+Echoes a formatted non-validation message using the name of the logged in user. _This function takes one argument that will be echoed._
+
+**Usage**
+
+```bash
+    said_no "Stopping."
+```
+
+**Output**
+
+```bash
+    | user said no. Stopping.
+```
+
+### notify_error
+
+Echoes a formatted error message. _This function takes as many arguments as you wish (they will be echoed)._
+
+**Usage**
+
+```bash
+    notify_error "You're doing it wrong"
+```
+
+**Output**
+
+```bash
+    # Woops ! You're doing it wrong
+```
+
+### notify_done
+
+Echoes a formatted "done" text. _This function takes no argument._
+
+**Usage**
+
+```bash
+    notify_done
+```
+
+**Output**
+
+```bash
+    # Done
+```
+
+### clear
+
+Adds a blank line to standard output.
+
+_This function takes no argument._
+
+**Usage**
+
+```bash
+    clear
+```
+
 ## Log and debug
 
 Bootshtrap come with some additional logs that you can echo to standard output when debugging. To do so, use the `log` function in your script when you need to log something while debugging
