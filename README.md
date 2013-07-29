@@ -353,9 +353,7 @@ Echoes a formatted "done" text. _This function takes no argument._
 
 ### clear
 
-Adds a blank line to standard output.
-
-_This function takes no argument._
+Adds a blank line to standard output. _This function takes no argument._
 
 **Usage**
 
