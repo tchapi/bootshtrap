@@ -1,9 +1,11 @@
 # BootSHtrap
-- - -
 
 A micro library of helpers and functions to create simple bash scripts that look nice.
 
 ![It's bootSHtrap](/misc/meme.jpg "It's bootSHtrap")
+
+- - -
+
 
 ## Background
 
@@ -212,7 +214,65 @@ This is the easy step to get you going. Just create a script
     run
 ```
 
-## API
+## Log and debug
+
+Bootshtrap come with some additional logs that you can echo to standard output when debugging. To do so, use the `log` function in your script when you need to log something while debugging
+
+```bash
+    log "This is a debug log : $my_var"
+```
+
+Logs will **not** be echoed to standard output unless you specify the debug flag at the start of your script (_before_ autoloading bootSHtrap) :
+
+```bash
+   __DEBUG=1
+   source bootshtrap/autoload.sh # Autoloads the whole stuff
+```
+
+An example log in stdout :
+
+```bash
+
+   > ./my_script.sh
+
+   # This is a debug log : variable_value
+```
+
+> NB : By default, bootSHtrap logs its stuff with this function as well, so you may see some internal logs in there
+
+
+# The bootSHtrap "API"
+
+The API is divided in different sections :
+
+  - Colors
+  - Notifications
+  - Utilities
+  - System (TODO)
+
+It basically provides you with functions to work with more easily, and to interact with the user.
+
+## Colors
+
+These colors are available (on compatible terminals):
+
+  - YELLOW # bold yellow
+  - RED # bold red
+  - GREEN= # green
+  - BLUE # blue
+  - PURPLE # purple
+  - CYAN # cyan
+  - BOLD # bold white
+  - UNDERLINE # underlined normal text
+  - RESET # resets the color
+
+To use them, simply echo them in an `echo -e` command:
+
+```bash
+    echo -e ${RED}" My text in red "${RESET}
+```
+
+> NB : Do not forget to reset the color escape sequence (with the special `${RESET}` escape sequence) in order to only color _what you need_ ...
 
 ## Notifications
 
@@ -361,31 +421,49 @@ Adds a blank line to standard output. _This function takes no argument._
     clear
 ```
 
-## Log and debug
+## Utility functions
 
-Bootshtrap come with some additional logs that you can echo to standard output when debugging. To do so, use the `log` function in your script when you need to log something while debugging
+### load\_config\_file
 
-```bash
-    log "This is a debug log : $my_var"
-```
+This helper loads a config file if it exists, or outputs an error otherwise and exits with an error status of 1.
 
-Logs will **not** be echoed to standard output unless you specify the debug flag at the start of your script (_before_ autoloading bootSHtrap) :
+**Usage**
 
 ```bash
-   __DEBUG=1
-   source bootshtrap/autoload.sh # Autoloads the whole stuff
+    load_config_file "./my_config"
 ```
 
-An example log in stdout :
+**Returns**
+
+Nothin' ...
+
+### get\_array\_index
+
+This function tries to get the array index of an item in an array, if it exists. _This function takes two arguments : an item value and an array._
+
+**Usage**
 
 ```bash
-
-   > ./my_script.sh
-
-   # This is a debug log : variable_value
+    get_array_index ${needle} ${haystack[@]}
 ```
 
-> NB : By default, bootSHtrap logs its stuff with this function as well, so you may see some internal logs in there
+**Returns**
+
+`-1` if the element is not found, its index otherwise. With its index, you can then access the element with :
+
+```bash
+    index=`get_array_index ${needle} ${haystack[@]}`
+    echo ${haystack["$index"]} # This is your element, which equals value
+```
+
+(but this should not be necessary since the element equals `${needle}`)
+
+
+
+
+
+- - -
+
 
 ## Todo
 

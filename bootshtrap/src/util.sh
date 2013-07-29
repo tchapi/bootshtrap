@@ -60,6 +60,10 @@ get_array_index() {
   echo -1
 }
 
+# --------------------
+## INTERNALS from here
+# --------------------
+
 # Assesses the existence of a function, otherwise exits
 assess_function() {
   type ${1} &>/dev/null || {
@@ -69,10 +73,8 @@ assess_function() {
 }
 
 error_exit() {
-
   clear
   exit 1
-
 }
 
 log "util.sh loaded"
