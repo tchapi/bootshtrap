@@ -7,6 +7,9 @@ A micro library of helpers and functions to create simple bash scripts that look
 
 ## Background
 
+**29/07** : This is still work in progress.
+
+
 [[ To be completed soon ]]
 
 ## Requirements
@@ -155,6 +158,8 @@ This is the easy step to get you going. Just create a script
     ```bash
         #!/bin/bash
     ```
+
+    > NB : If, on Mac OS X, you have installed a local upgraded version of bash 4, then you probably want it to look like that : `#!/usr/local/bin/bash`
 
   2. Then, you have to load bootSHtrap into your script. This is done via a single command (below, we assume that the bootSHtrap folder is in the same folder than your script, but you're free to do otherwise) :
 

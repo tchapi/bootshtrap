@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 # Standard bootSHtrap script template example
 
 # Use BootSHtrap
