@@ -33,7 +33,7 @@ usage(){
       fi
 
       if ! [ "$parameter" == "0" ]; then
-        echo -ne ${UNDERLINE}" "${parameter}${RESET}
+        echo -ne " "${UNDERLINE}${parameter}${RESET}
       fi
       echo -ne " ("${RED}"required"${RESET}")"
       
@@ -56,7 +56,7 @@ usage(){
       fi
 
       if ! [ "$parameter" == "0" ]; then
-        echo -ne ${UNDERLINE}" "${parameter}${RESET}
+        echo -ne " "${UNDERLINE}${parameter}${RESET}
       fi
       echo -ne " ("${GREEN}"optional"${RESET}")"
       
