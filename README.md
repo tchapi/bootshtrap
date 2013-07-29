@@ -11,7 +11,7 @@ A micro library of helpers and functions to create simple bash scripts that look
 
 ## Requirements
 
-bootshtrap requires at least `bash 4` (for associative arrays to work correctly) and a GNU version of `getopt` (`gnu-getopt`, for option parsing).
+**bootSHtrap** requires at least `bash 4` (for associative arrays to work correctly) and a GNU version of `getopt` (`gnu-getopt`, for option parsing).
 
 For Mac OS X users, you can update your bash with `brew` :
 
@@ -75,16 +75,67 @@ You are left with 5 items to fill in :
 
   - The `required` item is either `0` or `1` and indicates if the option is compulsory or not.
 
-    > NB :An option without parameter cannot be required (Since this would mean that the script could *not* run without this option..)
+    > NB : An option without parameter cannot be required (Since this would mean that the script could *not* run without this option..)
 
-  - The `parameter` item indicates whether the option requires an argument or not. If not, then put `0`. If it does require an argument, indicate its name as you would like to see it in the usage help message (generally, a [a-zA-Z_-]* string for convenience)
+  - The `parameter` item indicates whether the option requires an argument or not. If not, then put `0`. If it does require an argument, indicate its name as you would like to see it in the usage help message (generally, a [a-zA-Z_-]* string for convenience).
 
-  - The `long` item indicates the long name of your option. It is required to start with the same letter as your option.
+  - The `long` item indicates the long name of your option. **It is required to start with the same letter as your option's letter.**
 
-  - The `message` item describes the effect of your option. It is used in the usage message
+  - The `message` item describes the effect of your option. It is used in the usage message.
 
-  - The `function` item indicates the name of the shell function that will be evaluated if the option is passed to your script. It must comply with shell rules for function naming 
+  - The `function` item indicates the name of the shell function that will be evaluated if the option is passed to your script. It must comply with shell rules for function naming. 
 
+#### Examples
+
+The `usage` configuration (already included, for your pleasure), is :
+
+```bash
+    options["h", "required"]=0
+    options["h", "parameter"]=0
+    options["h", "long"]="help"
+    options["h", "message"]="prints this help and usage message"
+    options["h", "function"]="usage"
+```
+
+The `usage` function is defined internally in bootSHtrap's files. It prints the usage according to the configuration, and then exits the script.
+If you need, you can call the `usage` function directly anywhere in your script :
+
+```bash
+    # Prints usage and exits
+    usage
+``` 
+
+> NB : The precoded `usage` function exits the script
+
+You can define a "flag-setting option", for instance `-f` or `--flag`, very easily :
+
+
+```bash
+    # bootshtrap.config
+    options["f", "required"]=0
+    options["f", "parameter"]=1
+    options["f", "long"]="flag"
+    options["f", "message"]="sets a flag according to the parameter given"
+    options["f", "function"]="set_flag"
+```
+
+And the related code :
+
+```bash
+    # example.sh (your script using bootSHtrap)
+    
+    # We define a global variable to hold the flag value
+    __MY_FLAG=1
+
+    # The handler in itself
+    set_flag() {
+
+      __MY_FLAG="${1}"
+
+    }
+```
+
+> NB : Your handlers can be defined anywhere in your code as long as they are available in the global context.
 
 ### Adding your parameters
 
@@ -95,13 +146,96 @@ Bootshtrap cannot guess the parameters you will manage in your script. Hence you
     parameters="required_param_1 required_param2 [optional_param_3]"
 ```
 
-[[ To be continued - work in progress ]]
+## Creating your script
+
+This is the easy step to get you going. Just create a script 
+
+  1. For the sake of compatibility, it is recommended that you include, at the very top of your file, a directive for the shell to know how to interpret your script :
+
+    ```bash
+        #!/bin/bash
+    ```
+
+  2. Then, you have to load bootSHtrap into your script. This is done via a single command (below, we assume that the bootSHtrap folder is in the same folder than your script, but you're free to do otherwise) :
+
+    ```bash
+        source bootshtrap/autoload.sh # Autoloads the whole stuff
+    ```
+
+  3. Define a `main` function . This will be your single entry point after the options' functions have been called
+
+    ```bash
+
+        main() {
+
+          # Your magic goes here ...
+
+        }
+
+    ```
+
+  4. The last line of the script must be `run` to trigger the whole thing
+
+    ```bash
+        
+        # The rest of your script is up there
+        run
+
+    ```
+
+  5. That's it, do not forget to `chmod +x your_script.sh` and you're ready to go !
+
+> NB : The full example goes like that :
+
+```bash 
+    #!/bin/bash
+    # Standard bootSHtrap script template example
+
+    # Use BootSHtrap
+    # __DEBUG=1 # Sets the debug mode, which outputs logs to standard output
+    source bootshtrap/autoload.sh # Autoloads the whole stuff
+
+    # You need to have a main() function in your script - this is your entry point
+    main(){
+
+      # Your magic ....
+
+    }
+
+    # Runs the application - this call must be the last (and only) inline function call,
+    # at the very end of the script.
+    run
+```
+
+## Log and debug
+
+Bootshtrap come with some additional logs that you can echo to standard output when debugging. To do so, use the `log` function in your script when you need to log something while debugging
+
+```bash
+    log "This is a debug log : $my_var"
+```
+
+Logs will **not** be echoed to standard output unless you specify the debug flag at the start of your script (_before_ autoloading bootSHtrap) :
+
+```bash
+   __DEBUG=1
+   source bootshtrap/autoload.sh # Autoloads the whole stuff
+```
+
+An example log in stdout :
+
+```bash
+
+   > ./my_script.sh
+
+   # This is a debug log : variable_value
+```
+
+> NB : By default, bootSHtrap logs its stuff with this function as well, so you may see some internal logs in there
 
 ## Todo
 
-  - in logs and notifs, always use ${*} notation [DONE]
-  - test various cases when functions don't exist (declared in config but not coded) [DONE]
-  - add the ARGS_ALL_CLEAN in autoload [DONE]
+  - TBC
 
 ## License
 

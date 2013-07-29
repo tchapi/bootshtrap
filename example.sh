@@ -1,5 +1,5 @@
-# Standard bootSHtrap script template example
 #!/bin/bash
+# Standard bootSHtrap script template example
 
 # Use BootSHtrap
 __DEBUG=1 # Sets the debug mode, which outputs logs to standard output
