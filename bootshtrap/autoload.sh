@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Current filename of script
+# If you're thinking readlink -f could do the job, read this :
+# http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
@@ -10,6 +12,8 @@ done
 __DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 __GETOPT_PATH="getopt"
+
+set -e
 
 # Includes
   source ${__DIR}/src/debug.sh
@@ -34,8 +38,9 @@ __GETOPT_PATH="getopt"
 run() {
 
   # Magic
+
   eval set -- "${ARGS}";
-  log "${#ARGS[@]} option(s) found : ${ARGS}"
+  log "${ARGS[@]} option(s) found : ${ARGS}"
   
   # Do we have enough options ?
   if [[ $ORIGINAL_ARGS_COUNT -lt ${#ARGS_SHORT_REQUIRED[@]} ]]; then
