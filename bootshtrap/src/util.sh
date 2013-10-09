@@ -79,15 +79,19 @@ assess_function() {
 
 trap_break()
 {
+    clear
+    clear
     notify_error "CTRL-C HIT script [$0]: line $1"
-    notify_error "last command : [$BASH_COMMAND]"
+    indicate "Last command" "$BASH_COMMAND"
     error_exit
 }
 
 trap_error()
 {
+    clear
+    clear
     notify_error "While running script [$0]: line $1"
-    notify_error "error in command : [$BASH_COMMAND]"
+    indicate "Error in command" "$BASH_COMMAND]"
     error_exit
 }
 
@@ -96,13 +100,5 @@ error_exit() {
   trap 2 3
   exit 1
 }
-
-set -E # Beware ! Only works if trap ERR is set !
-set -u # Undefined variables
-
-# Trap errors
-trap 'trap_break $LINENO' INT QUIT
-trap 'trap_error $LINENO' ERR
-
 
 log "util.sh loaded"

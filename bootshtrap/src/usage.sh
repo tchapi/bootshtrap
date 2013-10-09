@@ -109,6 +109,7 @@ parse_options_config() {
         # Required or optional
         if [[ $value -eq 1 ]]; then
           ARGS_SHORT_REQUIRED+=("${code}${ADD}")
+          ARGS_ALL_REQUIRED+=("${code}")
           if [[ ${options["$code, long"]} ]]; then
             ARGS_LONG_REQUIRED+=(${options["$code, long"]}${ADD})
           fi
@@ -142,6 +143,7 @@ parse_options_config() {
   ARGS_LONG_ALL_GETOPT=($(printf '%s\n' "${ARGS_LONG_ALL_GETOPT[@]}"|sort))
 
   ARGS_ALL=($(printf '%s\n' "${ARGS_ALL[@]}"|sort))
+  ARGS_ALL_REQUIRED=($(printf '%s\n' "${ARGS_ALL_REQUIRED[@]}"|sort))
   ARGS_LONG_ALL=($(printf '%s\n' "${ARGS_LONG_ALL[@]}"|sort))
 
   log "Short options : ${ARGS_ALL_GETOPT[@]}, of which ${#ARGS_SHORT_REQUIRED[@]} is (are) required"
@@ -154,9 +156,18 @@ get_arguments(){
   # Formatting for the command line
   SHORTS=($(printf -- '%s' "${ARGS_ALL_GETOPT[@]}"))
   LONGS=($(printf -- '%s,' "${ARGS_LONG_ALL_GETOPT[@]}"))
-  ARGS=$(${__GETOPT_PATH} -o "$SHORTS" -l "$LONGS" -n $0 -- "$@" 2>/dev/null);
 
-  if [ $? -ne 0 ]; then
+  # This is a simili-try/catch structure, to get the error from getopt, 
+  # which would otherwise be impossible (it would exit)
+  ARGS=`{
+    ${__GETOPT_PATH} -o "$SHORTS" -l "$LONGS" -n $0 -- "$@" 2>/dev/null
+  } || {
+    echo "0"
+  }`
+
+  # Missing option or invalid parameter ?
+  if [ $? -ne 0 ] || [ "$ARGS" = " --
+0" ] || [ "$ARGS" = "0" ] ; then
     notify_error "Invalid option(s) or missing parameter for : ${@}"
     usage
     error_exit

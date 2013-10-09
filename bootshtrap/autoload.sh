@@ -38,16 +38,10 @@ set -e
 run() {
 
   # Magic
-
   eval set -- "${ARGS}";
-  log "${ARGS[@]} option(s) found : ${ARGS}"
+  log "Argument(s) and option(s) found : ${ARGS}"
   
-  # Do we have enough options ?
-  if [[ $ORIGINAL_ARGS_COUNT -lt ${#ARGS_SHORT_REQUIRED[@]} ]]; then
-    notify_error "You have not provided enough options"
-    usage
-    error_exit # Exits with a general purpose error code
-  fi
+  REQUIRED_COUNTER=0;
 
   while true; do
 
@@ -77,6 +71,9 @@ run() {
       else
         ${handler}
       fi
+
+      WAS_REQUIRED=`get_array_index "${ARGS_ALL["$SHORT_USED"]}" ${ARGS_ALL_REQUIRED[@]}`
+
     elif [[ LONG_USED -ne -1 ]]; then
       shift;
       handler=${options[${ARGS_LONG_ALL["$LONG_USED"]}, "function"]}
@@ -89,14 +86,36 @@ run() {
       else
         ${handler}
       fi
-    else
-      # Ooops
+
+      WAS_REQUIRED=`get_array_index "${ARGS_LONG_ALL["$LONG_USED"]}" ${ARGS_ALL_REQUIRED[@]}`
+
+    else # Should never happen !
       notify_error "Invalid option : ${1}"
       usage
-      error_exit # Exits with a general purpose error code
+      error_exit
+    fi
+
+    if [[ WAS_REQUIRED -ne -1 ]]; then
+      REQUIRED_COUNTER=$((REQUIRED_COUNTER+1))
     fi
 
   done
+
+  # Have all the required options been found ?
+  if [[ REQUIRED_COUNTER -ne "${#ARGS_LONG_REQUIRED[@]}" ]]; then
+      # Ooops
+      notify_error "A required option was not found"
+      usage
+      error_exit
+  fi
+
+  # Now we can trap errors
+  set -u # Undefined variables
+  set -E # Beware ! Only works if trap ERR is set !
+
+  # Trap errors
+  trap 'trap_break $LINENO' INT QUIT
+  trap 'trap_error $LINENO' ERR
 
   main "${@}"
   clear
