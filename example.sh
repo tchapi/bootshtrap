@@ -3,6 +3,7 @@
 
 # Use BootSHtrap
 # __DEBUG=1 # Sets the debug mode, which outputs logs to standard output
+config="`dirname $0`"/bootshtrap.config # Path to your configuration file
 source bootshtrap/autoload.sh # Autoloads the whole stuff
 
 # You need to have a main() function in your script - this is your entry point

@@ -27,7 +27,7 @@ set -e
 # Arguments & loads bootshtrap config file
   unset options
   declare -A options
-  load_config_file ${__DIR}/bootshtrap.config
+  load_config_file "$config"
 
   title
 
