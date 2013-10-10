@@ -125,6 +125,8 @@ parse_options_config() {
         ARGS_LONG_ALL_GETOPT+=(${options["$code, long"]}${ADD})
 
         # For parsing input in autoload
+        # Even if your array indices are not sequential, appending with += will simply assign to the highest index + 1
+        # ^^that works for us ^^
         ARGS_ALL+=("${code}")
         ARGS_LONG_ALL+=(${options["$code, long"]})
 

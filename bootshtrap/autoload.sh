@@ -60,40 +60,31 @@ run() {
 
     # We have to differentiate short options and long options
     if [[ SHORT_USED -ne -1 ]]; then
-      shift;
-      handler=${options[${ARGS_ALL["$SHORT_USED"]}, "function"]}
-      assess_function ${handler}
-
-      # This option has a parameter ?
-      if ! [ ${options[${ARGS_ALL["$SHORT_USED"]}, "parameter"]} = "0" ] && [ -n "${1}" ]; then
-        ${handler} "${1}"
-        shift;
-      else
-        ${handler}
-      fi
-
-      WAS_REQUIRED=`get_array_index "${ARGS_ALL["$SHORT_USED"]}" ${ARGS_ALL_REQUIRED[@]}`
+      CODE="$SHORT_USED"
 
     elif [[ LONG_USED -ne -1 ]]; then
-      shift;
-      handler=${options[${ARGS_LONG_ALL["$LONG_USED"]}, "function"]}
-      assess_function ${handler}
-
-      # This option has a parameter ?
-      if ! [ ${options[${ARGS_LONG_ALL["$LONG_USED"]}, "parameter"]} = "0" ] && [ -n "${1}" ]; then
-        ${handler} "${1}"
-        shift;
-      else
-        ${handler}
-      fi
-
-      WAS_REQUIRED=`get_array_index "${ARGS_LONG_ALL["$LONG_USED"]}" ${ARGS_ALL_REQUIRED[@]}`
+      CODE="$LONG_USED"
 
     else # Should never happen !
       notify_error "Invalid option : ${1}"
       usage
       error_exit
     fi
+
+    shift;
+    handler=${options[${ARGS_ALL["$CODE"]}, "function"]}
+    assess_function ${handler}
+
+    # This option has a parameter ?
+    if ! [ ${options[${ARGS_ALL["$CODE"]}, "parameter"]} = "0" ] && [ -n "${1}" ]; then
+      ${handler} "${1}"
+      shift;
+    else
+      ${handler}
+    fi
+
+    WAS_REQUIRED=`get_array_index "${ARGS_ALL["$CODE"]}" ${ARGS_ALL_REQUIRED[@]}`
+
 
     if [[ WAS_REQUIRED -ne -1 ]]; then
       REQUIRED_COUNTER=$((REQUIRED_COUNTER+1))

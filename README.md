@@ -9,7 +9,7 @@ A micro library of helpers and functions to create simple bash scripts that look
 
 ## Background
 
-**29/07** : This is still work in progress.
+**11/10** : We have a quite complete version now, with error trapping and correct parameter parsing !
 
 
 [[ To be completed soon ]]
@@ -166,6 +166,7 @@ This is the easy step to get you going. Just create a script
   2. Then, you have to load bootSHtrap into your script. This is done via a single command (below, we assume that the bootSHtrap folder is in the same folder than your script, but you're free to do otherwise) :
 
     ```bash
+        config="/home/user/project/bootshtrap.config" # Change this path to wherever your bootshtrap.config file is
         source bootshtrap/autoload.sh # Autoloads the whole stuff
     ```
 
