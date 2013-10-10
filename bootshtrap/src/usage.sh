@@ -45,11 +45,11 @@ usage(){
 
   for key in "${ARGS_SHORT_OPTIONAL[@]}"; do
 
-      long=${options["$key, long"]}
-      message=${options["$key, message"]}
+      long=${options["${key:0:1}, long"]}
+      message=${options["${key:0:1}, message"]}
       parameter=${options["${key:0:1}, parameter"]}
       
-      echo -ne ${BLUE}"     -${key}"${RESET}
+      echo -ne ${BLUE}"     -${key:0:1}"${RESET}
 
       if [[ "${long}" ]]; then
         echo -ne ${CYAN}" --${long}"${RESET}
