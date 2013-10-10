@@ -168,7 +168,7 @@ get_arguments(){
   # Missing option or invalid parameter ?
   if [ $? -ne 0 ] || [ "$ARGS" = " --
 0" ] || [ "$ARGS" = "0" ] ; then
-    notify_error "Invalid option(s) or missing parameter for : ${@}"
+    notify_error "Invalid option(s) or missing parameter."
     usage
     error_exit
   fi
