@@ -36,9 +36,9 @@ warn(){
   shift;
   clear
   if [ "${NB}" -eq 1 ] ; then
-    echo -e " # "${YELLOW}${TEXT}${RESET}
+    echo -e ${RED}" # "${YELLOW}${TEXT}${RESET}
   elif [ "${NB}" -gt 1 ] ; then
-    echo -e " # "${YELLOW}${TEXT}${RESET}" : ${@}"
+    echo -e ${RED}" # "${YELLOW}${TEXT}${RESET}" : ${@}"
   fi
   clear
 }
@@ -59,18 +59,12 @@ ask(){
 }
 
 said_yes(){
-  echo -e "   | "$(whoami)" said "${GREEN}"Yes"${RESET}"."
-  if [[ -z "$1" ]]; then
-    echo -e " "${GREEN}"${1}"${RESET}
-  fi
+  echo -e "   | "$(whoami)" said "${GREEN}"Yes"${RESET}". "${GREEN}"${1-}"${RESET}
   clear
 }
 
 said_no(){
-  echo -e "   | "$(whoami)" said "${RED}"No"${RESET}"."
-  if [[ -z "$1" ]]; then
-    echo -e " "${GREEN}"${1}"${RESET}
-  fi
+  echo -e "   | "$(whoami)" said "${RED}"No"${RESET}". "${GREEN}"${1-}"${RESET}
   clear
 }
 
@@ -81,6 +75,20 @@ notify_error(){
 
 notify_done(){
   echo -e " # "${GREEN}"Done. "${RESET}
+  clear
+}
+
+header(){
+
+  echo -e ${RESET}
+
+  header="${1-}"
+  length=${#header}
+  decoration=`seq 1 ${length} | sed 's/.*/-/' | tr -d '\n'`
+
+  echo -e " % "${CYAN}"${header}"${RESET}
+  echo    " % "${decoration}
+
   clear
 }
 

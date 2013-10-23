@@ -109,6 +109,5 @@ run() {
   trap 'trap_error $LINENO' ERR
 
   main "${@}"
-  clear
 
 }
