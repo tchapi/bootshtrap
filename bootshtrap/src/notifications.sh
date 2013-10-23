@@ -34,13 +34,11 @@ warn(){
   NB="$#"
   TEXT="${1-}"
   shift;
-  clear
   if [ "${NB}" -eq 1 ] ; then
     echo -e ${RED}" # "${YELLOW}${TEXT}${RESET}
   elif [ "${NB}" -gt 1 ] ; then
     echo -e ${RED}" # "${YELLOW}${TEXT}${RESET}" : ${@}"
   fi
-  clear
 }
 
 
