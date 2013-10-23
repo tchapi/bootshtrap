@@ -10,7 +10,7 @@ clear(){
 
 ack(){
   NB="$#"
-  TEXT="${1}"
+  TEXT="${1-}"
   shift;
   if [ "${NB}" -eq 1 ] ; then
     echo -e " # "${GREEN}${TEXT}${RESET}
@@ -21,7 +21,7 @@ ack(){
 
 indicate(){
   NB="$#"
-  TEXT="${1}"
+  TEXT="${1-}"
   shift;
   if [ "${NB}" -eq 1 ] ; then
     echo -e " # "${BLUE}${TEXT}${RESET}
@@ -32,20 +32,23 @@ indicate(){
 
 warn(){
   NB="$#"
-  TEXT="${1}"
+  TEXT="${1-}"
   shift;
+  clear
   if [ "${NB}" -eq 1 ] ; then
     echo -e " # "${YELLOW}${TEXT}${RESET}
   elif [ "${NB}" -gt 1 ] ; then
     echo -e " # "${YELLOW}${TEXT}${RESET}" : ${@}"
   fi
+  clear
 }
+
 
 ask(){
   if [ "$#" -eq 2 ] ; then
-    echo -e >&2 " # "${BLUE}"${1}"${RESET}" [${2}] ?\c"
+    echo -e >&2 " # "${PURPLE}"${1-}"${RESET}" [${2}] ?\c"
   else
-    echo -e >&2 " # "${BLUE}"${1}"${RESET}" ?\c"
+    echo -e >&2 " # "${PURPLE}"${1-}"${RESET}" ?\c"
   fi
   read response
   if [ "$response" == "" ] && [ "$#" -eq 2 ]; then
@@ -56,12 +59,18 @@ ask(){
 }
 
 said_yes(){
-  echo -e "   | "$(whoami)" said "${GREEN}"Yes"${RESET}"."${GREEN}" ${1}"${RESET}
+  echo -e "   | "$(whoami)" said "${GREEN}"Yes"${RESET}"."
+  if [[ -z "$1" ]]; then
+    echo -e " "${GREEN}"${1}"${RESET}
+  fi
   clear
 }
 
 said_no(){
-  echo -e "   | "$(whoami)" said "${RED}"No"${RESET}"."${GREEN}" ${1}"${RESET}
+  echo -e "   | "$(whoami)" said "${RED}"No"${RESET}"."
+  if [[ -z "$1" ]]; then
+    echo -e " "${GREEN}"${1}"${RESET}
+  fi
   clear
 }
 
