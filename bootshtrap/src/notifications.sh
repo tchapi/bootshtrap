@@ -86,8 +86,8 @@ header(){
   length=${#header}
   decoration=`seq 1 ${length} | sed 's/.*/-/' | tr -d '\n'`
 
-  echo -e " % "${CYAN}"${header}"${RESET}
-  echo    " % "${decoration}
+  echo -e "   % "${CYAN}"${header}"${RESET}
+  echo    "   % "${decoration}
 
   clear
 }
